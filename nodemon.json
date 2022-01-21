@@ -1,7 +1,7 @@
 {
-    "watch": ["app", "tsconfig.json"],
+    "watch": ["src", "tsconfig.json"],
     "ext": "ts",
-    "ignore": ["app/**/*.spec.ts"],
+    "ignore": ["src/**/*.spec.ts"],
     "exec": "npm run build && npm start",
     "env": {
       "NODE_DEBUG": 9229,
