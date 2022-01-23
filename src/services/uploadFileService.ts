@@ -5,7 +5,7 @@ import fs from 'fs';
 import appRoot from 'app-root-path';
 
 export class UploadFileService {
-    static saveUploadFile(req: IncomingMessage, successCallback: Function) {
+    static saveUploadFile(req: IncomingMessage) {
         return new Promise((resolve, reject) => {
             const form = new formidable.IncomingForm();
 
@@ -25,10 +25,6 @@ export class UploadFileService {
                 fs.rename(oldPath, newPath, function (err) {
                     if (err) {
                         reject(err);
-                    }
-    
-                    if (successCallback) {
-                        successCallback();
                     }
 
                     resolve(true);
