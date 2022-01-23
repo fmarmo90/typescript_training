@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
+    "@types/node": "^17.0.10",
     "css-loader": "^6.5.1",
     "esbuild": "^0.14.13",
     "esbuild-node-tsc": "^1.8.2",
@@ -29,6 +30,7 @@
   },
   "dependencies": {
     "app-root-path": "^3.0.0",
+    "csv-parser": "^3.0.0",
     "formidable": "^2.0.1"
   }
 }

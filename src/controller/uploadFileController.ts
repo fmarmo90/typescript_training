@@ -1,13 +1,14 @@
 
 import { IncomingMessage, ServerResponse } from 'http';
-import { UploadFileService } from '../services/uploadFileService';
+import { FileService } from '../services/fileService';
 import { HttpCodes } from '../types/enums';
 import { Utils } from '../utils/utils';
 
 export default class UploadFileController {
     static saveUploadFile = async (req: IncomingMessage, res: ServerResponse) => {
         try {
-            await UploadFileService.saveUploadFile(req);
+            const userInputData: UserInputData = await FileService.saveUpload(req);
+            await FileService.process(userInputData);
 
             Utils.responseJson(res, {
                 status: 'File Uploaded!'

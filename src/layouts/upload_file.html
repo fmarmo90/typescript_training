@@ -108,9 +108,9 @@
 
             const formData = new FormData();
 
-            formData.append("name", phone.value);
-            formData.append("initialDate", initialDate.value);
-            formData.append("finishDate", finishDate.value);
+            formData.append("phone", phone.value);
+            formData.append("initDate", initialDate.value);
+            formData.append("endDate", finishDate.value);
             formData.append("csvFile", csvFile.files[0]);
 
             fetch("http://localhost:3000/upload", {
