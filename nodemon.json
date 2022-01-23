@@ -1,6 +1,6 @@
 {
     "watch": ["src", "tsconfig.json"],
-    "ext": "ts",
+    "ext": "ts, html",
     "ignore": ["src/**/*.spec.ts"],
     "exec": "npm run build && npm start",
     "env": {

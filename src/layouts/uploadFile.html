@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subida de archivo</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+
+        html, body {
+            font-family: "Open Sans", sans-serif;
+        }
+
+        body {
+            background-color: #080808;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 60px auto;
+        }
+
+        .container h1 {
+            color: #fff;
+            text-align: center;
+        }
+
+        form {
+            background-color: #FFF;
+            padding: 30px;
+        }
+
+        .input-group {
+            margin-top: 10px;
+        }
+
+        .input-group label {
+            display: block;
+        }
+
+        .input-group input {
+            margin-top: 5px;
+            padding: 12px 20px;
+            width: 90%;
+            border: 2px solid #CCC;
+        }
+
+        .input-group label {
+            font-weight: 600;
+        }
+
+        .submit-invoice {
+            margin-top: 20px;
+            width: 100%;
+            border: none;
+            background: rgb(37, 83, 3);
+            font-size: 18px;
+            color: white;
+            border-radius: 3px;
+            padding: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .submit-invoice:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Subir archivo csv</h1>
+        <form id="upload_form">
+            <div class="input-group">
+                <label for="phone">Nº teléfono</label>
+                <input name="phone" id="phone" placeholder="Ingrese el número de teléfono a buscar"/>
+            </div>
+            <div class="input-group">
+                <label for="initial_date">Fecha desde</label>
+                <input type="date" name="initial_date" id="initial_date"/>
+            </div>
+            <div class="input-group">
+                <label for="finish_date">Fecha hasta</label>
+                <input type="date" name="finish_date" id="finish_date"/>
+            </div>
+            <div class="input-group">
+                <label for="file">Archivo CSV</label>
+                <input id="file" type="file">
+            </div>
+            <button class="submit-invoice" type="submit">Generar Factura</button>
+        </form>
+    </div>
+    <script type="text/javascript">
+        const form = document.getElementById("upload_form");
+
+        form.addEventListener("submit", submitForm);
+
+        function submitForm(e) {
+            e.preventDefault();
+
+            const phone = document.getElementById("phone");
+            const initialDate = document.getElementById("initial_date");
+            const finishDate = document.getElementById("finish_date");
+            const csvFile = document.getElementById("file");
+
+            console.log(csvFile.files[0]);
+
+            const formData = new FormData();
+
+            formData.append("name", phone.value);
+            formData.append("initialDate", initialDate.value);
+            formData.append("finishDate", finishDate.value);
+            formData.append("csvFile", csvFile.files[0]);
+
+            fetch("http://localhost:3000/upload", {
+                method: 'post',
+                body: formData
+            })
+            .then((res) => console.log(res))
+            .catch((err) => ("Error occured", err));
+        }
+    </script>
+</body>
+</html>
