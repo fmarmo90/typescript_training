@@ -42,7 +42,9 @@ export class FileService {
 
     static process(userInputData: UserInputData) {
         return new Promise((resolve, reject) => {
-            fs.createReadStream(appRoot + `/dist/uploads/${userInputData.fileName}`)
+            const filePath = appRoot + `/dist/uploads/${userInputData.fileName}`;
+
+            fs.createReadStream(filePath)
             .pipe(csv({
                 headers: [
                     'origin',
@@ -58,6 +60,7 @@ export class FileService {
                 }
             })
             .on('end', () => {
+                fs.unlinkSync(filePath);
                 console.log('finish');
                 resolve(true);
             });
