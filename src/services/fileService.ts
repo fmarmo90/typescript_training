@@ -4,7 +4,7 @@ import formidable from 'formidable';
 import fs from 'fs';
 import appRoot from 'app-root-path';
 import csv from'csv-parser';
-import { Transform } from 'stream';
+import { UserService } from './userServices';
 
 export class FileService {
     static saveUpload(req: IncomingMessage) : Promise<UserInputData> {
@@ -40,30 +40,40 @@ export class FileService {
         })
     }
 
-    static process(userInputData: UserInputData) {
-        return new Promise((resolve, reject) => {
-            const filePath = appRoot + `/dist/uploads/${userInputData.fileName}`;
+    static async process(userInputData: UserInputData) {
+        if (!userInputData.phone) {
+            throw Error('No phone for user');
+        }
 
-            fs.createReadStream(filePath)
-            .pipe(csv({
-                headers: [
-                    'origin',
-                    'destination',
-                    'revert',
-                    'duration',
-                    'date'
-                ]
-            }))
-            .on('data', (data) => {
-                if (data.origin === userInputData.phone) {
-                    console.log(data);
-                }
-            })
-            .on('end', () => {
-                fs.unlinkSync(filePath);
-                console.log('finish');
-                resolve(true);
+        try {
+            const userInfo: User = await UserService.getInfo(userInputData.phone);
+
+            return new Promise((resolve, reject) => {
+                const filePath = appRoot + `/dist/uploads/${userInputData.fileName}`;
+
+                fs.createReadStream(filePath)
+                .pipe(csv({
+                    headers: [
+                        'origin',
+                        'destination',
+                        'revert',
+                        'duration',
+                        'date'
+                    ]
+                }))
+                .on('data', (data) => {
+                    if (data.origin === userInputData.phone) {
+                        //console.log(data);
+                    }
+                })
+                .on('end', () => {
+                    fs.unlinkSync(filePath);
+                    console.log('finish');
+                    resolve(true);
+                });
             });
-        });
+        } catch (err) {
+            throw err;
+        }
     }
 }

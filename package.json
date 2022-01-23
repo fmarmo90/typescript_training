@@ -31,6 +31,7 @@
   "dependencies": {
     "app-root-path": "^3.0.0",
     "csv-parser": "^3.0.0",
-    "formidable": "^2.0.1"
+    "formidable": "^2.0.1",
+    "node-fetch": "^2.6.7"
   }
 }

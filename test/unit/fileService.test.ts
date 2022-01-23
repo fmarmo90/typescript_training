@@ -4,6 +4,9 @@ import request from 'supertest';
 import UploadFileController from '../../src/controller/uploadFileController';
 import { FileService } from '../../src/services/FileService';
 import { HttpCodes } from '../../src/types/enums';
+import fetch from 'node-fetch';
+
+jest.mock('node-fetch');
 
 beforeEach(() => {
   jest.restoreAllMocks();
@@ -50,4 +53,21 @@ describe('Testing upload functionality', () => {
 
       done();
     });
+});
+
+describe('Testing process functionality', () => {
+  it ('Upload must return 500 if phone number is not provided to process method', async (done: Function) : Promise<void> => {
+    jest.spyOn(FileService, 'saveUpload').mockResolvedValue({
+      phone: '',
+      initDate: '2021-01-23',
+      endDate: '2022-01-23',
+      fileName: 'test.csv'
+    });
+
+    const res: Response & ServerResponse = await request(server).post('/upload');
+    
+    expect(res.statusCode).toBe(500);
+
+    done();
+  })
 });
