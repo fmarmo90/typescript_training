@@ -2,7 +2,7 @@ import { ServerResponse } from 'http';
 import server from '../../src/app/server';
 import request from 'supertest';
 import UploadFileController from '../../src/controller/uploadFileController';
-import { UploadFileService } from '../../src/services/uploadFileService';
+import { UploadService } from '../../src/services/UploadService';
 import { HttpCodes } from '../../src/types/enums';
 
 beforeEach(() => {
@@ -21,7 +21,7 @@ describe('Testing upload functionality', () => {
 
     it('Expect uploadFileController to be call on hit POST /upload route', async (done: Function) : Promise<void> => {
       jest.spyOn(UploadFileController, 'saveUploadFile');
-      jest.spyOn(UploadFileService, 'saveUploadFile').mockResolvedValue(true);
+      jest.spyOn(UploadService, 'saveUploadFile').mockResolvedValue(true);
 
       await request(server).post('/upload');
 
@@ -32,7 +32,7 @@ describe('Testing upload functionality', () => {
 
     it ('Expect uploadFileController to throw error on reject for saveUploadFile method of upload service', async (done: Function) : Promise<void> => {
       jest.spyOn(UploadFileController, 'saveUploadFile');
-      jest.spyOn(UploadFileService, 'saveUploadFile').mockRejectedValue(false);
+      jest.spyOn(UploadService, 'saveUploadFile').mockRejectedValue(false);
 
       const res: Response & ServerResponse = await request(server).post('/upload');
 
