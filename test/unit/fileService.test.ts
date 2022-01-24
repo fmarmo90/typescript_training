@@ -69,5 +69,5 @@ describe('Testing process functionality', () => {
     expect(res.statusCode).toBe(500);
 
     done();
-  })
+  });
 });

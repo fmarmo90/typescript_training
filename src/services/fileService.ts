@@ -5,7 +5,6 @@ import fs from 'fs';
 import appRoot from 'app-root-path';
 import csv from'csv-parser';
 import { UserService } from './userServices';
-import uniqueFileName from 'unique-filename';
 
 export class FileService {
     static saveUpload(req: IncomingMessage) : Promise<UserInputData> {
@@ -23,7 +22,9 @@ export class FileService {
                     fs.mkdirSync(appRoot + '/dist/uploads/');
                 }
     
-                const newPath = uniqueFileName(appRoot + '/dist/uploads/', 'file') + '.csv';
+                const uniqueFileName = Math.random().toString(36).slice(2);
+
+                const newPath = `${appRoot}/dist/uploads/${uniqueFileName}.csv`;
     
                 fs.rename(oldPath, newPath, function (err) {
                     if (err) {
@@ -69,7 +70,7 @@ export class FileService {
                         data.date = data.date.split('T')[0].replace(/-/g, '');
 
                         if (data.date >= userInputData.initDate && data.date <= userInputData.endDate) {
-                            this.formarData(data, userInfo);
+                            this.formatData(data, userInfo);
 
                             //console.log(data);
                             count++;
@@ -88,7 +89,7 @@ export class FileService {
         }
     }
 
-    static formarData(data: CSVData, userInfo: User) {
+    static formatData(data: CSVData, userInfo: User) {
         this.formatDuration(data);
         this.formatCallType(data, userInfo);
     }
