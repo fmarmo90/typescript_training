@@ -4,7 +4,8 @@ import formidable from 'formidable';
 import fs from 'fs';
 import appRoot from 'app-root-path';
 import csv from'csv-parser';
-import { UserService } from './userServices';
+import GenerateInvoiceUseCase from '../application/useCases/generateInvoice';
+import { UserService } from '../services/userServices';
 
 export class FileService {
     static saveUpload(req: IncomingMessage) : Promise<UserInputData> {
@@ -48,9 +49,8 @@ export class FileService {
         }
 
         try {
-            const userInfo: User = await UserService.getInfo(userInputData.phone);
-
-            let count = 0;
+            const user = await UserService.getInfo(userInputData.phone);
+            const generateInvoiceCase = new GenerateInvoiceUseCase(user);
 
             return new Promise((resolve, reject) => {
                 const filePath = userInputData.fileName;
@@ -65,53 +65,28 @@ export class FileService {
                         'date'
                     ]
                 }))
+                .on('error', (err) => {
+                    reject(err);
+                })
                 .on('data', (data: CSVData) => {
                     if (data.origin === userInputData.phone && data.destination !== userInputData.phone) {
                         data.date = data.date.split('T')[0].replace(/-/g, '');
 
                         if (data.date >= userInputData.initDate && data.date <= userInputData.endDate) {
-                            this.formatData(data, userInfo);
-
-                            //console.log(data);
-                            count++;
+                            generateInvoiceCase.addRecord(data);
                         }
                     }
                 })
                 .on('end', () => {
                     fs.unlinkSync(filePath);
-                    console.log(`finish, process ${count} fields`);
-                    count = 0;
-                    resolve(true);
+
+                    const result = generateInvoiceCase.invoke();
+                    
+                    resolve(result);
                 });
             });
         } catch (err) {
             throw err;
-        }
-    }
-
-    static formatData(data: CSVData, userInfo: User) {
-        this.formatDuration(data);
-        this.formatCallType(data, userInfo);
-    }
-
-    static formatDuration(data: CSVData) {
-        data.duration = Math.floor(Number(data.duration) / 60);
-    }
-
-    static formatCallType(data: CSVData, userInfo: User) {
-        let countryOrigin = data.origin.substring(1,3);
-        let countryDestination = data.destination.substring(1,3);
-
-        if (countryOrigin === countryDestination) {
-            data.type = 'N';
-        }
-
-        if (countryOrigin !== countryDestination) {
-            data.type = 'I';
-        }
-
-        if (userInfo.firendsList.find(element => element === data.destination)) {
-            data.type = 'F';
         }
     }
 }

@@ -13,7 +13,7 @@ export class Utils {
     static responseLayout = (res: ServerResponse, layoutName: string) => {
         res.setHeader('Content-Type', 'text/html');
         res.writeHead(HttpCodes.OK);
-        res.write(fs.readFileSync(path.join(__dirname, `../layouts/${layoutName}`)));
+        res.write(fs.readFileSync(path.join(__dirname, `../../presentation/layouts/${layoutName}`)));
         res.end();
     }
 }

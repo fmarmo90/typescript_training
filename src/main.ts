@@ -1,4 +1,4 @@
-import server from './app/server';
+import server from './infrastructure/server';
 
 const PORT: number = 3000;
 

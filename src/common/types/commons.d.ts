@@ -33,17 +33,18 @@ interface Invoice {
 
 interface Movement {
     destination: string,
-    origin: string,
-    duration: string,
+    duration: number,
     date: string,
-    price: string
+    price: number
 }
 
 interface CSVData {
     origin: string,
     destination: string,
     revert: string,
-    duration: string | number,
+    duration: number,
     date: string,
-    type?: string
+    type?: string,
+    isFriend: boolean,
+    price?: number
 }

@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import { HttpCodes, HttpMethods, Layouts } from '../types/enums';
+import { HttpCodes, HttpMethods, Layouts } from '../../common/types/enums';
 import UploadFileController from '../controller/uploadFileController';
-import { Utils } from '../utils/utils';
+import { Utils } from '../../common/utils/utils';
 
 const routing = async (req: IncomingMessage, res: ServerResponse) : Promise<void> => {
     if (req.url === '/') {

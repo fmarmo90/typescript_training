@@ -117,7 +117,10 @@
                 method: 'post',
                 body: formData
             })
-            .then((res) => console.log(res))
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
             .catch((err) => ("Error occured", err));
         }
     </script>
