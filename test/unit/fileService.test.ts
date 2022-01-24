@@ -1,10 +1,9 @@
 import { ServerResponse } from 'http';
-import server from '../../src/app/server';
+import server from '../../src/infrastructure/server';
 import request from 'supertest';
-import UploadFileController from '../../src/controller/uploadFileController';
+import UploadFileController from '../../src/presentation/controller/uploadFileController';
 import { FileService } from '../../src/services/FileService';
-import { HttpCodes } from '../../src/types/enums';
-import fetch from 'node-fetch';
+import { HttpCodes } from '../../src/common/types/enums';
 
 jest.mock('node-fetch');
 
