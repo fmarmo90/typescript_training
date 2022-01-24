@@ -30,8 +30,10 @@
   },
   "dependencies": {
     "app-root-path": "^3.0.0",
+    "config": "^3.3.7",
     "csv-parser": "^3.0.0",
     "formidable": "^2.0.1",
+    "ioredis": "^4.28.3",
     "node-fetch": "^2.6.7"
   }
 }
