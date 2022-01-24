@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  app:
+    container_name: "app"
+    build:
+      context: .
+      dockerfile: .dockerfile
+    environment:
+      - REDIS_HOST=redis-server
+    ports:
+      - "3000:3000"
+    depends_on:
+      - "redis-server"
+  redis-server:
+    container_name: "cache-redis"
+    image: "redis:alpine"
+    command: redis-server
+    ports:
+      - "6379:6379"

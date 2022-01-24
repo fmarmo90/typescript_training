@@ -5,6 +5,7 @@
     "exec": "npm run build && npm start",
     "env": {
       "NODE_DEBUG": 9229,
-      "NODE_ENV": "development"
+      "NODE_ENV": "development",
+      "REDIS_HOST": "127.0.0.1"
     }
   }
