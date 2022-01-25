@@ -16,4 +16,8 @@ export class Utils {
         res.write(fs.readFileSync(path.join(__dirname, `../../presentation/layouts/${layoutName}`)));
         res.end();
     }
+
+    static generateUniqueID = () : string => {
+        return Math.random().toString(36).slice(2);
+    }
 }

@@ -1,8 +1,12 @@
 type UserInputData = {
     phone: string,
     initDate: string,
-    endDate: string,
-    fileName: string
+    endDate: string
+}
+
+type UploadResult = {
+    body: UserInputData,
+    filePath: string
 }
 
 type UserApiResponse = {
@@ -23,7 +27,8 @@ interface UserFriend {
 }
 
 interface Invoice {
-    user: User,
+    address: string,
+    name: string,
     movements: Array<Movement>,
     totalCharged: string,
     totalNationalMinutes: string,
@@ -39,6 +44,17 @@ interface Movement {
 }
 
 interface CSVData {
+    origin: string,
+    destination: string,
+    revert: string,
+    duration: number,
+    date: string,
+    type?: string,
+    isFriend?: boolean,
+    price?: number
+}
+
+interface InvoiceRecordData {
     origin: string,
     destination: string,
     revert: string,
