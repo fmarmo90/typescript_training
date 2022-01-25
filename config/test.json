@@ -1,0 +1,11 @@
+{
+    "port": 3000,
+    "dependencies": {
+        "userApi": {
+            "url": "https://interview-brubank-api.herokuapp.com/users/#phone"
+        }
+    },
+    "cache": {
+        "ttl": 300
+    }
+}
