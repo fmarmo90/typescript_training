@@ -45,6 +45,6 @@ interface CSVData {
     duration: number,
     date: string,
     type?: string,
-    isFriend: boolean,
+    isFriend?: boolean,
     price?: number
 }

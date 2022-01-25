@@ -2,14 +2,14 @@ import Invoice from '../domain/invoice';
 
 export default class GenerateInvoiceUseCase {
     private user: User;
-    filteredData: Array<CSVData> = [];
+    private filteredData: Array<CSVData> = [];
 
     constructor(user: User) {
         this.user = user;
     }
     
     addRecord(csvData: CSVData) {
-        this.formatData(csvData)
+        this.formatData(csvData);
 
         this.filteredData.push(csvData);
     }

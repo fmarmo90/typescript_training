@@ -1,5 +1,5 @@
 import { ServerResponse } from 'http';
-import server from '../../src/app/server';
+import server from '../../src/infrastructure/server';
 import request from 'supertest';
 
 describe('Testing http server functionality', () => {
