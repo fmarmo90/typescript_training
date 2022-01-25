@@ -13,7 +13,7 @@ export default class Invoice {
         this.user = user;
     }
 
-    generate(data: Array<CSVData>) {
+    generate(data: Array<InvoiceRecordData>) {
         data.forEach(record => {
             record.price = this.calculatePrice(record);
 
@@ -26,44 +26,34 @@ export default class Invoice {
                 price: record.price
             })
         });
-
-        return {
-            'address': this.user.address,
-            'name': this.user.name,
-            'total': this.total,
-            'totalInternationalMinutes': this.totalInternationalMinutes,
-            'totalNationalMinutes': this.totalNationalMinutes,
-            'totalFriendsMinutes': this.totalFriendsMinutes,
-            'movements': this.movementList
-        }
     }
 
-    private calculatePrice(csvRecord: CSVData) {
-        if (csvRecord.isFriend) {
-            this.friendMinutesAcumulated += csvRecord.duration;
-            this.totalFriendsMinutes += csvRecord.duration;
+    private calculatePrice(invoiceRecord: InvoiceRecordData) {
+        if (invoiceRecord.isFriend) {
+            this.friendMinutesAcumulated += invoiceRecord.duration;
+            this.totalFriendsMinutes += invoiceRecord.duration;
             
             if (this.friendMinutesAcumulated <= 150) {
                 return 0;
             }
         }
     
-        return this.calculateCallPrice(csvRecord);
+        return this.calculateCallPrice(invoiceRecord);
     }
 
-    private calculateCallPrice(csvRecord: CSVData) : number {
-        if (csvRecord.revert === 'S') return 0;
+    private calculateCallPrice(invoiceRecord: InvoiceRecordData) : number {
+        if (invoiceRecord.revert === 'S') return 0;
         
-        if (csvRecord.type === 'N') {
-            this.totalNationalMinutes += csvRecord.duration;
+        if (invoiceRecord.type === 'N') {
+            this.totalNationalMinutes += invoiceRecord.duration;
 
-            return csvRecord.duration * 2.5;
+            return invoiceRecord.duration * 2.5;
         }
     
-        if (csvRecord.type === 'I') {
-            this.totalInternationalMinutes += csvRecord.duration;
+        if (invoiceRecord.type === 'I') {
+            this.totalInternationalMinutes += invoiceRecord.duration;
 
-            return csvRecord.duration * 20;
+            return invoiceRecord.duration * 20;
         }
     }
 }

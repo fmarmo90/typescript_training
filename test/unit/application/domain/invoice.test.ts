@@ -1,6 +1,6 @@
 import Invoice from '../../../../src/application/domain/invoice';
 
-const csvDataArrayMock: Array<CSVData> = [
+const csvDataArrayMock: Array<InvoiceRecordData> = [
     {
         origin: '+191167980953',
         destination: '+5491167930920',
@@ -32,22 +32,6 @@ beforeEach(() => {
 });
 
 describe('Invoice functionality', () => {
-    it('Expect generate return object with data', async (done: Function) : Promise<void> => {
-        jest.spyOn(testInvoice, 'generate');
-      
-        const result = testInvoice.generate(csvDataArrayMock);
-
-        expect(result).toBeDefined();
-        expect(result).toHaveProperty('address');
-        expect(result).toHaveProperty('name');
-        expect(result).toHaveProperty('total');
-        expect(result).toHaveProperty('totalNationalMinutes');
-        expect(result).toHaveProperty('totalFriendsMinutes');
-        expect(result).toHaveProperty('movements');
-
-        done();
-    });
-
     it('Expect calculatePrice to be call when generate invoice', async (done: Function) : Promise<void> => {
         const proto = Object.getPrototypeOf(testInvoice);
 
