@@ -18,7 +18,7 @@ export default class UserAdapter implements RestAdapter {
                 
                 apiResult = await response.json();
 
-                await cache.save(phone, apiResult, 300);
+                await cache.save(phone, apiResult, config.get('cache.ttl'));
             }
 
             return {
