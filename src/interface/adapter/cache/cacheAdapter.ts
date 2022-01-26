@@ -1,4 +1,4 @@
-export abstract class CacheAdapter {
-    abstract get(id: string) : void;
-    abstract save(id: string, data: object, ttl: number) : void;
+export default interface CacheAdapter {
+    get(id: string);
+    save(id: string, data: object, ttl: number);
 }

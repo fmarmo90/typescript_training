@@ -2,10 +2,12 @@ import UseCase from './useCase';
 import GenerateInvoiceFromFile from './generateInvoiceFromFile';
 import CsvFileAdapter from '../../interface/adapter/files/csvAdapter';
 import UserAdapter from '../../interface/adapter/rest/userAdapter';
+import RestAdapter from '../../interface/adapter/rest/restAdapter';
+import { FileAdapter } from '../../interface/adapter/files/fileAdapter';
 
 export default class ProcessUploadInvoiceData extends UseCase {
-    private fileAdapter: CsvFileAdapter;
-    private userAdapter: UserAdapter;
+    private fileAdapter: FileAdapter;
+    private restAdapter: RestAdapter;
 
     userData: UserInputData;
     filePath: string;
@@ -22,7 +24,7 @@ export default class ProcessUploadInvoiceData extends UseCase {
         this.filePath = uploadData.filePath;
 
         this.fileAdapter = new CsvFileAdapter();
-        this.userAdapter = new UserAdapter();
+        this.restAdapter = new UserAdapter();
     };
     
     async invoke() {
@@ -31,7 +33,7 @@ export default class ProcessUploadInvoiceData extends UseCase {
         }
 
         try {
-            const userData = await this.userAdapter.get(this.userData.phone);
+            const userData = await this.restAdapter.get(this.userData.phone);
             const generateInvoice = new GenerateInvoiceFromFile(userData);
 
             const resultInvoice = await this.fileAdapter.readStream(this.filePath, 

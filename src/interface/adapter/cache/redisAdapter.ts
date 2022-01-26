@@ -1,16 +1,21 @@
-import { CacheAdapter } from './cacheAdapter';
+import CacheAdapter from './cacheAdapter';
 import redis from 'ioredis';
 
-export class RedisAdapter implements CacheAdapter {
-    client: any;
+export default class RedisAdapter implements CacheAdapter {
+    private static _instance;
+    private client;
 
-    constructor() {
+    private constructor() {
         this.client = new redis({
             host: process.env.REDIS_HOST,
             port: process.env.REDIS_PORT
         });
 
         this.client.on('error', (err) => console.log('Redis Client Error', err));
+    }
+
+    public static getInstance(): any {
+        return this._instance || (this._instance = new RedisAdapter());
     }
 
     async get(id: string) {
