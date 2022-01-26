@@ -1,3 +1,4 @@
+import { Utils } from '../../common/utils/utils';
 import Invoice from '../domain/invoice';
 import UseCase from './useCase';
 
@@ -39,7 +40,7 @@ export default class GenerateInvoiceFromFile extends UseCase {
     }
 
     private formatDuration(invoiceRecord: InvoiceRecordData) {
-        invoiceRecord.duration = Math.floor(Number(invoiceRecord.duration) / 60);
+        invoiceRecord.durationCalculated = Utils.calculateMinutesAndSeconds(invoiceRecord.seconds);
     }
 
     private formatCallType(invoiceRecord: InvoiceRecordData, userInfo: User) {

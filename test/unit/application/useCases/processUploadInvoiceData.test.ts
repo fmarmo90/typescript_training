@@ -1,4 +1,3 @@
-import GenerateInvoiceFromFile from '../../../../src/application/useCases/generateInvoiceFromFile';
 import ProcessUploadInvoiceData from '../../../../src/application/useCases/processUploadInvoiceData';
 import CsvAdapter from '../../../../src/interface/adapter/files/csvAdapter';
 import UserAdapter from '../../../../src/interface/adapter/rest/userAdapter';
@@ -47,8 +46,8 @@ describe('Process upload invoice data functionality', () => {
     });
 
     it ('Should invoke call user adapter on correct input', async (done: Function) : Promise<void> => {
-        const userAdapterMock = jest.spyOn(processUploadInvoceData['userAdapter'], 'get').mockResolvedValue('ok');
-        const readAdapterMock = jest.spyOn(processUploadInvoceData['fileAdapter'], 'readStream').mockResolvedValue('ok');
+        const userAdapterMock = jest.spyOn(processUploadInvoceData['restAdapter'], 'get').mockResolvedValue('ok');
+        //const readAdapterMock = jest.spyOn(processUploadInvoceData['fileAdapter'], 'readStream').mockResolvedValue('ok');
 
         processUploadInvoceData.invoke();
 
@@ -58,4 +57,19 @@ describe('Process upload invoice data functionality', () => {
         
         done();
     });
+
+    it ('Should invoke throw error on error with adapters', async (done: Function) : Promise<void> => {
+        const userAdapterMock = jest.spyOn(processUploadInvoceData['restAdapter'], 'get').mockResolvedValue('ok');
+        //const readAdapterMock = jest.spyOn(processUploadInvoceData['fileAdapter'], 'readStream').mockResolvedValue('ok');
+
+        processUploadInvoceData.invoke();
+
+        expect(userAdapterMock).toBeCalled();
+        //expect(readAdapterMock).toBeCalled();
+        //expect(GenerateInvoiceFromFile).toBeCalled();
+        
+        done();
+    });
+
+
 });

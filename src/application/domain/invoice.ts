@@ -1,3 +1,4 @@
+import { Utils } from '../../common/utils/utils';
 export default class Invoice {
     user: User;
     movementList: Array<Movement> = [];
@@ -15,24 +16,39 @@ export default class Invoice {
 
     generate(data: Array<InvoiceRecordData>) {
         data.forEach(record => {
+            this.accumulateCallMinutes(record);
+
             record.price = this.calculatePrice(record);
 
             this.total += record.price;
 
             this.movementList.push({
-                destination: record.destination,
-                duration: record.duration,
+                duration: record.durationCalculated.minutes,
                 date: record.date,
-                price: record.price
+                price: record.price,
+                type: record.type,
+                friend: record.isFriend
             })
         });
     }
 
+    private accumulateCallMinutes(invoiceRecord: InvoiceRecordData) {
+        if (invoiceRecord.type === 'N') {
+            this.totalNationalMinutes += invoiceRecord.durationCalculated.minutes;
+        }
+
+        if (invoiceRecord.type === 'I') {
+            this.totalInternationalMinutes += invoiceRecord.durationCalculated.minutes;
+        }
+
+        if (invoiceRecord.isFriend) {
+            this.friendMinutesAcumulated += invoiceRecord.durationCalculated.minutes;
+            this.totalFriendsMinutes += invoiceRecord.durationCalculated.minutes;
+        }
+    }
+
     private calculatePrice(invoiceRecord: InvoiceRecordData) {
         if (invoiceRecord.isFriend) {
-            this.friendMinutesAcumulated += invoiceRecord.duration;
-            this.totalFriendsMinutes += invoiceRecord.duration;
-            
             if (this.friendMinutesAcumulated <= 150) {
                 return 0;
             }
@@ -45,15 +61,14 @@ export default class Invoice {
         if (invoiceRecord.revert === 'S') return 0;
         
         if (invoiceRecord.type === 'N') {
-            this.totalNationalMinutes += invoiceRecord.duration;
-
-            return invoiceRecord.duration * 2.5;
+            return 2.5;
         }
     
         if (invoiceRecord.type === 'I') {
-            this.totalInternationalMinutes += invoiceRecord.duration;
+            let totalExactMinutes = invoiceRecord.durationCalculated.minutes * 20;
+            let totalSecondsRemanent = (invoiceRecord.durationCalculated.seconds * 20) / 60;
 
-            return invoiceRecord.duration * 20;
+            return Utils.formatNumberToFix(totalExactMinutes + totalSecondsRemanent, 2);
         }
     }
 }

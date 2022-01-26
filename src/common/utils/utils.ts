@@ -20,4 +20,22 @@ export class Utils {
     static generateUniqueID = () : string => {
         return Math.random().toString(36).slice(2);
     }
+
+    static formatNumberToFix(value: number, fix: number) : number {
+        return Number(Number.parseFloat(value.toString()).toFixed(fix));
+    }
+
+    static calculateMinutesAndSeconds(seconds: number = 0, minutes: number = 0) : Duration {
+        if (seconds < 60) {
+            return {
+                minutes,
+                seconds
+            }
+        }
+        
+        seconds -= 60;
+        minutes++;
+        
+        return this.calculateMinutesAndSeconds(seconds, minutes);
+    }
 }

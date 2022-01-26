@@ -37,10 +37,12 @@ interface Invoice {
 }
 
 interface Movement {
-    destination: string,
+    destination?: string,
     duration: number,
     date: string,
-    price: number
+    price: number,
+    type?: string,
+    friend?: boolean
 }
 
 interface CSVData {
@@ -58,9 +60,15 @@ interface InvoiceRecordData {
     origin: string,
     destination: string,
     revert: string,
-    duration: number,
+    seconds: number,
     date: string,
+    durationCalculated?: Duration,
     type?: string,
     isFriend?: boolean,
     price?: number
+}
+
+interface Duration {
+    minutes: number,
+    seconds: number
 }

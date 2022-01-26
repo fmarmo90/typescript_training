@@ -42,7 +42,7 @@ export default class ProcessUploadInvoiceData extends UseCase {
                     'origin',
                     'destination',
                     'revert',
-                    'duration',
+                    'seconds',
                     'date'
                 ]
             },

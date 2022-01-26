@@ -16,7 +16,7 @@ beforeEach(() => {
         origin: '+191167980953',
         destination: '+5491167930920',
         revert: 'N',
-        duration: 150,
+        seconds: 150,
         date: '2020-08-27T05:55:43Z'
     }
 
@@ -76,7 +76,7 @@ describe('Generate invoice use case functionality', () => {
         generateInvoiceUseCase.addRecord(csvData);
 
         expect(mockformatDuration).toBeCalled();
-        expect(csvData.duration).toBe(2);
+        expect(csvData.durationCalculated.minutes).toBe(2);
 
         done();
     });
